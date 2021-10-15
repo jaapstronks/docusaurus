@@ -1360,6 +1360,15 @@ const Users: User[] = [
     source: 'https://github.com/webdriverio/webdriverio',
     tags: ['opensource', 'design', 'large','favorite'],
   },
+    {
+    title: 'Wings',
+    description:
+      'A website-as-a-service for progressive campaigns',
+    preview: require('./showcase/wings.png'),
+    website: 'https://wings.dev/',
+    source: 'https://github.com/bolsterdigital/wingsdocs',
+    tags: ['product', 'design', 'i18n'],
+  },
   {
     title: 'Wisdom',
     description: 'Session replay web analytics with open data SQL/S3 access.',
