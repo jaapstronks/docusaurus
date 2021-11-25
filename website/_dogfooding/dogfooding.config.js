@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 const fs = require('fs');
 
 /** @type {import('@docusaurus/types').PluginConfig[]} */
@@ -31,6 +38,10 @@ const dogfoodingPluginInstances = [
         title: 'Docusaurus Tests Blog',
         copyright: `Copyright © ${new Date().getFullYear()} Facebook, Inc.`,
       },
+      readingTime: ({content, frontMatter, defaultReadingTime}) =>
+        frontMatter.hide_reading_time
+          ? undefined
+          : defaultReadingTime({content, options: {wordsPerMinute: 5}}),
     }),
   ],
 

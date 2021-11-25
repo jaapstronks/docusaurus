@@ -9,7 +9,7 @@ import React, {ReactNode, useState, useCallback} from 'react';
 import {MDXProvider} from '@mdx-js/react';
 
 import renderRoutes from '@docusaurus/renderRoutes';
-import type {PropVersionMetadata} from '@docusaurus/plugin-content-docs-types';
+import type {PropVersionMetadata} from '@docusaurus/plugin-content-docs';
 import Layout from '@theme/Layout';
 import DocSidebar from '@theme/DocSidebar';
 import MDXComponents from '@theme/MDXComponents';
@@ -51,14 +51,14 @@ function DocPageContent({
       setHiddenSidebar(false);
     }
 
-    setHiddenSidebarContainer(!hiddenSidebarContainer);
+    setHiddenSidebarContainer((value) => !value);
   }, [hiddenSidebar]);
 
   return (
     <Layout
       wrapperClassName={ThemeClassNames.wrapper.docsPages}
       pageClassName={ThemeClassNames.page.docsDocPage}
-      searchMetadatas={{
+      searchMetadata={{
         version,
         tag: docVersionSearchTag(pluginId, version),
       }}>
@@ -148,7 +148,7 @@ function DocPage(props: Props): JSX.Element {
     matchPath(location.pathname, docRoute),
   );
   if (!currentDocRoute) {
-    return <NotFound {...props} />;
+    return <NotFound />;
   }
   return (
     <>

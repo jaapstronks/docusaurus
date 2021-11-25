@@ -1,8 +1,11 @@
 ---
+sidebar_position: 2
 id: plugin-content-blog
 title: '📦 plugin-content-blog'
 slug: '/api/plugins/@docusaurus/plugin-content-blog'
 ---
+
+import APITable from '@site/src/components/APITable';
 
 Provides the [Blog](blog.mdx) feature and is the default blog plugin for Docusaurus.
 
@@ -24,7 +27,7 @@ You can configure this plugin through the [preset options](#ex-config-preset).
 
 Accepted fields:
 
-<small>
+<APITable>
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -51,6 +54,7 @@ Accepted fields:
 | `beforeDefaultRehypePlugins` | `any[]` | `[]` | Custom Rehype plugins passed to MDX before the default Docusaurus Rehype plugins. |
 | `truncateMarker` | `string` | `/<!--\s*(truncate)\s*-->/` | Truncate marker, can be a regex or string. |
 | `showReadingTime` | `boolean` | `true` | Show estimated reading time for the blog post. |
+| `readingTime` | `ReadingTimeFunctionOption` | The default reading time | A callback to customize the reading time number displayed. |
 | `authorsMapPath` | `string` | `'authors.yml'` | Path to the authors map file, relative to the blog content directory specified with `path`. Can also be a `json` file. |
 | `feedOptions` | _See below_ | `{type: ['rss', 'atom']}` | Blog feed. If undefined, no rss feed will be generated. |
 | `feedOptions.type` | <code>'rss' \| 'atom' \| 'all'</code> (or array of multiple options) | **Required** | Type of feed to be generated. |
@@ -58,8 +62,9 @@ Accepted fields:
 | `feedOptions.description` | `string` | <code>\`${siteConfig.title} Blog\`</code> | Description of the feed. |
 | `feedOptions.copyright` | `string` | `undefined` | Copyright message. |
 | `feedOptions.language` | `string` (See [documentation](http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes) for possible values) | `undefined` | Language metadata of the feed. |
+| `sortPosts` | <code>'descending' \| 'ascending' </code> | `'descending'` | Governs the direction of blog post sorting. |
 
-</small>
+</APITable>
 
 ```typescript
 type EditUrlFunction = (params: {
@@ -68,6 +73,23 @@ type EditUrlFunction = (params: {
   permalink: string;
   locale: string;
 }) => string | undefined;
+
+type ReadingTimeOptions = {
+  wordsPerMinute: number;
+  wordBound: (char: string) => boolean;
+};
+
+type ReadingTimeFunction = (params: {
+  content: string;
+  frontMatter?: BlogPostFrontMatter & Record<string, unknown>;
+  options?: ReadingTimeOptions;
+}) => number;
+
+type ReadingTimeFunctionOption = (params: {
+  content: string;
+  frontMatter: BlogPostFrontMatter & Record<string, unknown>;
+  defaultReadingTime: ReadingTimeFunction;
+}) => number | undefined;
 ```
 
 ## Example configuration {#ex-config}
@@ -173,7 +195,7 @@ Markdown documents can use the following Markdown FrontMatter metadata fields, e
 
 Accepted fields:
 
-<small>
+<APITable>
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -194,7 +216,7 @@ Accepted fields:
 | `image` | `string` | `undefined` | Cover or thumbnail image that will be used when displaying the link to your post. |
 | `slug` | `string` | File path | Allows to customize the blog post url (`/<routeBasePath>/<slug>`). Support multiple patterns: `slug: my-blog-post`, `slug: /my/path/to/blog/post`, slug: `/`. |
 
-</small>
+</APITable>
 
 ```typescript
 type Tag = string | {label: string; permalink: string};

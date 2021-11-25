@@ -26,15 +26,18 @@ import {chain} from 'lodash';
 import {localizePluginTranslationFile} from '../translations/translations';
 import applyRouteTrailingSlash from './applyRouteTrailingSlash';
 
-export function sortConfig(routeConfigs: RouteConfig[]): void {
+export function sortConfig(
+  routeConfigs: RouteConfig[],
+  baseUrl: string = '/',
+): void {
   // Sort the route config. This ensures that route with nested
   // routes is always placed last.
   routeConfigs.sort((a, b) => {
     // Root route should get placed last.
-    if (a.path === '/' && b.path !== '/') {
+    if (a.path === baseUrl && b.path !== baseUrl) {
       return 1;
     }
-    if (a.path !== '/' && b.path === '/') {
+    if (a.path !== baseUrl && b.path === baseUrl) {
       return -1;
     }
 
@@ -121,12 +124,12 @@ export async function loadPlugins({
 
   const allContent: AllContent = chain(loadedPlugins)
     .groupBy((item) => item.name)
-    .mapValues((nameItems) => {
-      return chain(nameItems)
+    .mapValues((nameItems) =>
+      chain(nameItems)
         .groupBy((item) => item.options.id ?? DEFAULT_PLUGIN_ID)
         .mapValues((idItems) => idItems[0].content)
-        .value();
-    })
+        .value(),
+    )
     .value();
 
   // 3. Plugin Lifecycle - contentLoaded.
@@ -221,7 +224,7 @@ export async function loadPlugins({
 
   // Sort the route config. This ensures that route with nested
   // routes are always placed last.
-  sortConfig(pluginsRouteConfigs);
+  sortConfig(pluginsRouteConfigs, context.siteConfig.baseUrl);
 
   // Apply each plugin one after the other to translate the theme config
   function translateThemeConfig(

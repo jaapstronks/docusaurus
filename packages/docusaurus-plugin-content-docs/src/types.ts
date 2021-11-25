@@ -113,7 +113,6 @@ export type LastUpdateData = {
 
 export type DocFrontMatter = {
   // Front matter uses snake case
-  /* eslint-disable camelcase */
   id?: string;
   title?: string;
   tags?: FrontMatterTag[];
@@ -131,7 +130,8 @@ export type DocFrontMatter = {
   parse_number_prefixes?: boolean;
   toc_min_heading_level?: number;
   toc_max_heading_level?: number;
-  /* eslint-enable camelcase */
+  pagination_next?: string | null;
+  pagination_prev?: string | null;
 };
 
 export type DocMetadataBase = LastUpdateData & {
